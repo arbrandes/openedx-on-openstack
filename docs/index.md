@@ -153,10 +153,10 @@ HTTPS URLs, respectively:
 If you want to deploy the hastexo XBlock together with Open edX to your single
 node, go back to your installed node and:
 
-1. Locate the following variables in
-   `/var/tmp/edx-configuration-secrets/host_vars/localhost` (which you created
-   above) and change them as described.  Set the `os_*` variables to the
-   OpenStack cloud of your choice.
+- Locate the following variables in
+  `/var/tmp/edx-configuration-secrets/host_vars/localhost` (which you
+  created above) and change them as described.  Set the `os_*`
+  variables to the OpenStack cloud of your choice.
 
 ```
 EDXAPP_EXTRA_REQUIREMENTS:
@@ -181,16 +181,16 @@ EDXAPP_XBLOCK_SETTINGS:
         os_region_name: ""
 ```
 
-2. Check out the `hastexo/integration/base` branch of edx-configuration, which
-   contains the `gateone` role:
+- Check out the `hastexo/integration/base` branch of
+  edx-configuration, which contains the `gateone` role:
 
 ```
 $ cd /var/tmp/edx-configuration
 $ git checkout -b hastexo/integration/base origin/hastexo/integration/base
 ```
 
-3. Add the `gateone` role to `openstack-single-node.yml` and rerun that
-   playbook:
+- Add the `gateone` role to `openstack-single-node.yml` and rerun that
+  playbook:
 
 ```
 $ cd /var/tmp/edx-configuration/playbooks
@@ -390,10 +390,10 @@ ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi
 If you want to deploy the hastexo XBlock together with Open edX to your multi
 node cluster, go back to your deploy node and:
 
-1. Locate the following variables in
-   `/var/tmp/edx-configuration-secrets/group_vars/all` (which you created
-   above) and change them as described.  Set the `os_*` variables to the
-   OpenStack cloud of your choice.
+- Locate the following variables in
+  `/var/tmp/edx-configuration-secrets/group_vars/all` (which you
+  created above) and change them as described.  Set the `os_*`
+  variables to the OpenStack cloud of your choice.
 
 ```
 EDXAPP_EXTRA_REQUIREMENTS:
@@ -418,8 +418,8 @@ EDXAPP_XBLOCK_SETTINGS:
         os_region_name: ""
 ```
 
-2. Add the `gateone` role to `openstack-multi-node.yml` under the `app_servers`
-   section (the last one).
+- Add the `gateone` role to `openstack-multi-node.yml` under the
+  `app_servers` section (the last one).
 
 ```
 $ cd ~/edx-configuration/playbooks
@@ -430,7 +430,7 @@ $ vim openstack-multi-node.yaml
 - gateone
 ```
 
-3. Run that playbook, limitting the run to the `app_servers`:
+- Run that playbook, limitting the run to the `app_servers`:
 
 ```
 $ ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml --limit app_servers
