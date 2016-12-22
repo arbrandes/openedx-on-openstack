@@ -255,6 +255,36 @@ default for edX report storage.
     running the playbook in the last step therein: this will be accomplished in
     in this section.
 
+Now, generate a passphrase-less keypair, copy it over to the other nodes, and
+add the nodes to the host list so one doesn't have to manually confirm them
+later.  Note that this will only work if authentication forwarding is properly
+configured, and if you're logged in as the default user, "ubuntu".
+
+```sh
+# Create a new key pair
+export KEYFILE=~/.ssh/id_rsa
+ssh-keygen -t rsa -N "" -f $KEYFILE
+
+# Disable strict host key checking
+echo "StrictHostKeyChecking no" > ~/.ssh/config
+
+# Deploy it
+ips=$(ansible -i ~/edx-configuration-secrets/inventory.py all --list-hosts)
+for ip in $ips; do
+    ssh-keyscan $ip >> ~/.ssh/known_hosts
+    ssh-copy-id -i $KEYFILE $ip
+done
+```
+
+At this point, it is best if you reconnect to the deploy node **without** agent
+forwarding, as the latter can interfere with the Ansible deployment.  Ideally,
+start a screen session as well, so a disconnection will not stop the Ansible
+run:
+
+```
+exit
+ssh ubuntu@<deploy_ip>
+screen
 ```
 
 Be sure to run the `inventory.py` dynamic inventory generator, as opposed to
