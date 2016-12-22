@@ -227,6 +227,34 @@ NOTIFIER_SOURCE_REPO: "https://{{ COMMON_GIT_MIRROR }}/hastexo/edx-notifier.git"
 NOTIFIER_VERSION: "master"
 ```
 
+At this point, make sure to create a Swift container for this deployment: it'll
+be needed during the initial playbook run.  You can do so from your own
+computer, as long as the `openstack` command line client is installed and the
+appropriate OpenStack credentials are loaded into the environment.  By default,
+the sample Ansible variables will configure edX to use the "lms.example.com"
+container.  Run the following to create the container with read permissions for
+connections originating from the site itself:
+
+    Note: You can change the site name by editing
+    `edx-configuration-secrets/group_vars/all` and replacing `EDXAPP_SITE_NAME`
+    with the desired domain.
+
+```
+site=lms.example.com
+openstack container create $site
+openstack container set --property "read_acl=.r:$site" $site
+```
+
+Take the opportunity to set the `SWIFT_LOG_SYNC_*` variables in
+`group_vars/all`, even if you're not actually enabling Swift log
+synchronization.  These Swift authentication variables will also be used by
+default for edX report storage.
+
+    Note: If you intend to use the hastexo XBlock, refer to the "Multiple nodes
+    with the hastexo XBlock" section below, before continuing.  Avoid actually
+    running the playbook in the last step therein: this will be accomplished in
+    in this section.
+
 ```
 
 Be sure to run the `inventory.py` dynamic inventory generator, as opposed to
