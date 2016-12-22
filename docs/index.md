@@ -31,10 +31,11 @@ details.
 Prior to deploying the Heat templates, ensure that you have completed
 the following steps:
 
-- Install a full set of OpenStack client libraries on your system. On
-  a contemporary Ubuntu system, `apt-get install
-  python-openstackclient python-heatclient` will give you the
-  packages you need.
+- Install the OpenStack client libraries and command-line interfaces
+  (CLIs) on your system. Refer to the relevant section in
+  [the OpenStack User Guide](http://docs.openstack.org/user-guide/common/cli-install-openstack-command-line-clients.html)
+  for details on doing so, for a variety of operating systems and
+  platforms.
 - Retrieve your OpenStack Keystone credentials (a Keystone API
   endpoint, a tenant name, a username, and a password).
 - Retrieve the Neutron UUID of your external network, that is, the
