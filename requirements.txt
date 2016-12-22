@@ -1,0 +1,2 @@
+mdx_linkify
+markdown-include
