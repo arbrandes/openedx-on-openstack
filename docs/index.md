@@ -142,6 +142,22 @@ node, go back to your installed node and:
       - name: "git+https://github.com/hastexo/hastexo-xblock.git@master#egg=hastexo-xblock"
     EDXAPP_ADDL_INSTALLED_APPS:
       - 'hastexo'
+    EDXAPP_XBLOCK_SETTINGS:
+      hastexo:
+        providers:
+          default:
+            os_auth_url: ""
+            os_auth_token: ""
+            os_username: ""
+            os_password: ""
+            os_user_id: ""
+            os_user_domain_id: ""
+            os_user_domain_name: ""
+            os_project_id: ""
+            os_project_name: ""
+            os_project_domain_id: ""
+            os_project_domain_name: ""
+            os_region_name: ""
     ```
 
 2. Add the `gateone` role to `openstack-single-node.yml` and rerun that
@@ -355,6 +371,22 @@ node cluster, go back to your deploy node and:
       - name: "git+https://github.com/hastexo/hastexo-xblock.git@master#egg=hastexo-xblock"
     EDXAPP_ADDL_INSTALLED_APPS:
       - 'hastexo'
+    EDXAPP_XBLOCK_SETTINGS:
+      hastexo:
+        providers:
+          default:
+            os_auth_url: ""
+            os_auth_token: ""
+            os_username: ""
+            os_password: ""
+            os_user_id: ""
+            os_user_domain_id: ""
+            os_user_domain_name: ""
+            os_project_id: ""
+            os_project_name: ""
+            os_project_domain_id: ""
+            os_project_domain_name: ""
+            os_region_name: ""
     ```
 
 2. Add the `gateone` role to `openstack-multi-node.yml` under the `app_servers`
