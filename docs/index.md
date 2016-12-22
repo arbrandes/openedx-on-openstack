@@ -160,7 +160,15 @@ node, go back to your installed node and:
             os_region_name: ""
     ```
 
-2. Add the `gateone` role to `openstack-single-node.yml` and rerun that
+2. Check out the `hastexo/integration/base` branch of edx-configuration, which
+   contains the `gateone` role:
+
+    ```
+    $ cd /var/tmp/edx-configuration
+    $ git checkout -b hastexo/integration/base origin/hastexo/integration/base
+    ```
+
+3. Add the `gateone` role to `openstack-single-node.yml` and rerun that
    playbook:
 
     ```
