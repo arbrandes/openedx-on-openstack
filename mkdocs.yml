@@ -2,5 +2,6 @@ site_name: Open edX on OpenStack
 theme: readthedocs
 markdown_extensions:
   - admonition
+  - codehilite
   - markdown_include.include
   - linkify
