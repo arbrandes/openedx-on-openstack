@@ -39,16 +39,23 @@ the following steps:
 - Retrieve your OpenStack Keystone credentials (a Keystone API
   endpoint, a tenant name, a username, and a password).
 - Retrieve the Neutron UUID of your external network, that is, the
-  network that floating IPs are allocated from (`neutron net-list` or
-  `neutron net-show <networkname>`).
-- Create a Nova keypair for yourself (`nova keypair-add` or
-  `openstack keypair create`).
-- Upload an Ubuntu 14.04 image for your tenant into Glance (`glance
-  image-create --copy-from
-  https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
-  --disk-format qcow2 --container-format bare --name
-  ubuntu-14.04-server-cloudimg`), or have your cloud administrator
-  do the same for you and make the image public.
+  network that floating IPs are allocated from:
+  ```
+  openstack network list
+  openstack network show <networkname>
+  ```
+- Create a Nova keypair for yourself (`openstack keypair create`).
+- Upload an Ubuntu 14.04 image for your tenant into Glance:
+  ```
+  wget https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
+  openstack image create \
+    --disk-format qcow2 \
+    --container-format bare \
+    --file trusty-server-cloudimg-amd64-disk1.img \
+    --name ubuntu-14.04-server-cloudimg
+  ```
+  Alternatively, you may ask your cloud administrator do the same for
+  you, and mark the image public by adding the `--public` option.
 
 
 ## Deployment options
