@@ -9,7 +9,10 @@ environment must support:
 - OpenStack Glance,
 - OpenStack Cinder,
 - OpenStack Heat,
-- OpenStack Neutron (including LBaaS).
+- OpenStack Neutron (including LBaaS),
+- OpenStack Swift, or any drop-in replacement service that understands
+  the OpenStack Swift API and is registered as an object service
+  endpoint.
 
 The automated deployment time for an OpenStack based Open edX
 environment is approximately one hour. It only takes a few minutes to
