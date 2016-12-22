@@ -36,26 +36,32 @@ the following steps:
   [the OpenStack User Guide](http://docs.openstack.org/user-guide/common/cli-install-openstack-command-line-clients.html)
   for details on doing so, for a variety of operating systems and
   platforms.
+
 - Retrieve your OpenStack Keystone credentials (a Keystone API
   endpoint, a tenant name, a username, and a password).
+
 - Retrieve the Neutron UUID of your external network, that is, the
   network that floating IPs are allocated from:
-  ```
-  openstack network list
-  openstack network show <networkname>
-  ```
+
+```
+openstack network list
+openstack network show <networkname>
+```
+
 - Create a Nova keypair for yourself (`openstack keypair create`).
 - Upload an Ubuntu 14.04 image for your tenant into Glance:
-  ```
-  wget https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
-  openstack image create \
-    --disk-format qcow2 \
-    --container-format bare \
-    --file trusty-server-cloudimg-amd64-disk1.img \
-    --name ubuntu-14.04-server-cloudimg
-  ```
-  Alternatively, you may ask your cloud administrator do the same for
-  you, and mark the image public by adding the `--public` option.
+
+```
+wget https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
+openstack image create \
+  --disk-format qcow2 \
+  --container-format bare \
+  --file trusty-server-cloudimg-amd64-disk1.img \
+  --name ubuntu-14.04-server-cloudimg
+```
+
+Alternatively, you may ask your cloud administrator do the same for
+ you, and mark the image public by adding the `--public` option.
 
 
 ## Deployment options
@@ -152,49 +158,49 @@ node, go back to your installed node and:
    above) and change them as described.  Set the `os_*` variables to the
    OpenStack cloud of your choice.
 
-    ```
-    EDXAPP_EXTRA_REQUIREMENTS:
-      - name: "git+https://github.com/hastexo/hastexo-xblock.git@master#egg=hastexo-xblock"
-    EDXAPP_ADDL_INSTALLED_APPS:
-      - 'hastexo'
-    EDXAPP_XBLOCK_SETTINGS:
-      hastexo:
-        providers:
-          default:
-            os_auth_url: ""
-            os_auth_token: ""
-            os_username: ""
-            os_password: ""
-            os_user_id: ""
-            os_user_domain_id: ""
-            os_user_domain_name: ""
-            os_project_id: ""
-            os_project_name: ""
-            os_project_domain_id: ""
-            os_project_domain_name: ""
-            os_region_name: ""
-    ```
+```
+EDXAPP_EXTRA_REQUIREMENTS:
+  - name: "git+https://github.com/hastexo/hastexo-xblock.git@master#egg=hastexo-xblock"
+EDXAPP_ADDL_INSTALLED_APPS:
+  - 'hastexo'
+EDXAPP_XBLOCK_SETTINGS:
+  hastexo:
+    providers:
+      default:
+        os_auth_url: ""
+        os_auth_token: ""
+        os_username: ""
+        os_password: ""
+        os_user_id: ""
+        os_user_domain_id: ""
+        os_user_domain_name: ""
+        os_project_id: ""
+        os_project_name: ""
+        os_project_domain_id: ""
+        os_project_domain_name: ""
+        os_region_name: ""
+```
 
 2. Check out the `hastexo/integration/base` branch of edx-configuration, which
    contains the `gateone` role:
 
-    ```
-    $ cd /var/tmp/edx-configuration
-    $ git checkout -b hastexo/integration/base origin/hastexo/integration/base
-    ```
+```
+$ cd /var/tmp/edx-configuration
+$ git checkout -b hastexo/integration/base origin/hastexo/integration/base
+```
 
 3. Add the `gateone` role to `openstack-single-node.yml` and rerun that
    playbook:
 
-    ```
-    $ cd /var/tmp/edx-configuration/playbooks
-    $ vim openstack-single-node.yaml
-     ...
-     - certs
-     - demo
-     - gateone
-    $ ansible-playbook -i ../../edx-configuration-secrets/inventory.ini -c local openstack-single-node.yaml
-    ```
+```
+$ cd /var/tmp/edx-configuration/playbooks
+$ vim openstack-single-node.yaml
+ ...
+ - certs
+ - demo
+ - gateone
+$ ansible-playbook -i ../../edx-configuration-secrets/inventory.ini -c local openstack-single-node.yaml
+```
 
 
 ### Deploying a multi-node environment
@@ -389,46 +395,46 @@ node cluster, go back to your deploy node and:
    above) and change them as described.  Set the `os_*` variables to the
    OpenStack cloud of your choice.
 
-    ```
-    EDXAPP_EXTRA_REQUIREMENTS:
-      - name: "git+https://github.com/hastexo/hastexo-xblock.git@master#egg=hastexo-xblock"
-    EDXAPP_ADDL_INSTALLED_APPS:
-      - 'hastexo'
-    EDXAPP_XBLOCK_SETTINGS:
-      hastexo:
-        providers:
-          default:
-            os_auth_url: ""
-            os_auth_token: ""
-            os_username: ""
-            os_password: ""
-            os_user_id: ""
-            os_user_domain_id: ""
-            os_user_domain_name: ""
-            os_project_id: ""
-            os_project_name: ""
-            os_project_domain_id: ""
-            os_project_domain_name: ""
-            os_region_name: ""
-    ```
+```
+EDXAPP_EXTRA_REQUIREMENTS:
+  - name: "git+https://github.com/hastexo/hastexo-xblock.git@master#egg=hastexo-xblock"
+EDXAPP_ADDL_INSTALLED_APPS:
+  - 'hastexo'
+EDXAPP_XBLOCK_SETTINGS:
+  hastexo:
+    providers:
+      default:
+        os_auth_url: ""
+        os_auth_token: ""
+        os_username: ""
+        os_password: ""
+        os_user_id: ""
+        os_user_domain_id: ""
+        os_user_domain_name: ""
+        os_project_id: ""
+        os_project_name: ""
+        os_project_domain_id: ""
+        os_project_domain_name: ""
+        os_region_name: ""
+```
 
 2. Add the `gateone` role to `openstack-multi-node.yml` under the `app_servers`
    section (the last one).
 
-    ```
-    $ cd ~/edx-configuration/playbooks
-    $ vim openstack-multi-node.yaml
-    ...
-    - certs
-    - demo
-    - gateone
-    ```
+```
+$ cd ~/edx-configuration/playbooks
+$ vim openstack-multi-node.yaml
+...
+- certs
+- demo
+- gateone
+```
 
 3. Run that playbook, limitting the run to the `app_servers`:
 
-    ```
-    $ ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml --limit app_servers
-    ```
+```
+$ ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml --limit app_servers
+```
 
 #### Working with app server master images
 
