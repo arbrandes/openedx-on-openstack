@@ -294,11 +294,13 @@ screen
 ```
 
 Be sure to run the `inventory.py` dynamic inventory generator, as opposed to
-the static `intentory.ini`, meant for single node deployments:
+the static `intentory.ini`, meant for single node deployments.  Also, set
+`migrate_db=yes` on this first run, to ensure that the databases and tables are
+properly created.
 
 ```
 cd ~/edx-configuration/playbooks
-ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml
+ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml -e migrate_db=yes
 ```
 
 This playbook run may take one hour or more.  After it's done, log out of the
