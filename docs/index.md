@@ -15,8 +15,12 @@ The automated deployment time for an OpenStack based Open edX
 environment is approximately one hour. It only takes a few minutes to
 deploy OpenStack, Open edX's Ansible scheme consumes the rest.
 
-The templates support an OpenStack environment running OpenStack
-Icehouse (2014.1) or later.
+The templates use syntax that supports an OpenStack environment
+running OpenStack Juno (2014.2) or later. Please note that it is not
+recommended to run Open edX on environments running an OpenStack
+release marked end-of-life (EOL); see
+[the OpenStack release table](https://releases.openstack.org/) for
+details.
 
 
 ## Prerequisites
