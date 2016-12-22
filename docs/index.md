@@ -72,24 +72,24 @@ set two mandatory parameters when invoking Heat:
   using to log in once the machines have spun up.
 
 ```
-heat stack-create \
-  -f heat-templates/hot/edx-multi-node.yaml \
-  -P "public_net_id=<uuid>" \
-  -P "key_name=<name>" \
-  <stack_name>
+openstack stack create \
+    --template heat-templates/hot/edx-single-node.yaml \
+    --parameter public_net_id=<uuid> \
+    --parameter key_name=<name> \
+    <stack_name>
 ```
 
 To verify that the stack has reached the `CREATE_COMPLETE` state, run:
 
 ```
-heat stack-show <stack_name>
+openstack stack show <stack_name>
 ```
 
 Once stack creation is complete, you can use `heat output-show` to
 retrieve the IP address of your Open edX host:
 
 ```
-heat output-show <stack_name> public_ip
+openstack stack output show <stack_name> public_ip
 ssh ubuntu@<public_ip>
 ```
 
@@ -168,26 +168,28 @@ parameters when invoking Heat:
 In addition, you must set the name of the stack.
 
 ```
-heat stack-create \
-  -f heat-templates/hot/edx-multi-node.yaml \
-  -P "public_net_id=<uuid>" \
-  -P "app_count=<num>" \
-  -P "key_name=<name>" \
-  <stack_name>
+stack=<stack_name>
+openstack stack create \
+    --template heat-templates/hot/edx-multi-node.yaml \
+    --parameter public_net_id=<uuid> \
+    --parameter app_count=<num> \
+    --parameter key_name=<name> \
+    $stack
 ```
 
 To verify that the stack has reached the `CREATE_COMPLETE` state, run:
 
 ```
-heat stack-show <stack_name>
+openstack stack show $stack
 ```
 
-Once stack creation is complete, you can use `heat output-show` to
-retrieve the IP address of your deployment host:
+Once stack creation is complete, you can use `openstack stack output show` to
+retrieve the IP address of your deployment host, and then to connect to it,
+making sure to forward your SSH authentication agent:
 
 ```
-heat output-show <stack_name> deploy_ip
-ssh ubuntu@<deploy_ip>
+openstack stack output show $stack deploy_ip
+ssh ubuntu@<deploy_ip> -A
 ```
 
 Give the deploy node a few minutes to complete its `cloud-init` configuration,
@@ -216,10 +218,10 @@ ansible-playbook -i openstack/inventory.py openstack-multi-node.yml
 This playbook run may take one hour or more.  After it's done, log out of the
 deploy node and edit your local /etc/hosts.  If you didn't change any of the
 example variables, enter the following, substituting `app_ip` for the IP
-address of the app server pool you can obtain with the following Heat command:
+address of the app server pool you can obtain with the following command:
 
 ```
-heat output-show <stack_name> app_ip
+openstack stack output show $stack app_ip
 vim /etc/hosts
 ---
 <app_ip> lms.example.com studio.example.com
@@ -232,16 +234,11 @@ HTTPS URLs, respectively:
 * https://studio.example.com
 
 To deploy additional application servers within a previously deployed
-stack, use the `heat stack-update` command to increase the `app_count`
+stack, use the `openstack stack update` command to increase the `app_count`
 stack parameter:
 
 ```
-heat stack-update \
-  -f heat-templates/hot/edx-multi-node.yaml \
-  -P "public_net_id=<uuid>" \
-  -P "app_count=<new_num>" \
-  -P "key_name=<name>" \
-  <stack_name>
+openstack stack update --existing --parameter app_count=<new_num> $stack
 ```
 
 If you removed app servers, there's nothing else you need to do.
