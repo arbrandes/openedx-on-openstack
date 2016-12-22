@@ -794,14 +794,22 @@ backup playbook.
 
 You will also need to create an SSH key without a passphrase for the ubuntu
 user on the deploy node, and distribute it to the other nodes.   This is so
-that Ansible can connect to the backend node without human intervention.  A
-hands-free way to create one and copy it to all backend nodes would be:
+that Ansible can connect to the backend node without human intervention.  (You
+can skip this step if you've already done it as part of initial stack
+deployment.)
 
-```
-KEYFILE=~/.ssh/id_rsa
+```sh
+# Create a new key pair
+export KEYFILE=~/.ssh/id_rsa
 ssh-keygen -t rsa -N "" -f $KEYFILE
-for i in 192.168.122.111 192.168.122.112 192.168.122.113; do
-    ssh-keyscan $i >> ~/.ssh/known_hosts
-    ssh-copy-id -i $KEYFILE $i
+
+# Disable strict host key checking
+echo "StrictHostKeyChecking no" > ~/.ssh/config
+
+# Deploy it
+ips=$(~/edx-configuration/playbooks/openstack/inventory.py --list | grep 192 | tr -d ' ",')
+for ip in $ips; do
+    ssh-keyscan $ip >> ~/.ssh/known_hosts
+    ssh-copy-id -i $KEYFILE $ip
 done
 ```
