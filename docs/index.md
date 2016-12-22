@@ -97,14 +97,19 @@ Give the node a few minutes to complete its `cloud-init` configuration, which
 will install all ansible prerequisites, including the `edx-configuration`
 repository (check the contents of `/var/log/cloud-init.log` for details).  Once
 `cloud-init` is done, you will be able to start the ansible playbook run from
-within `edx-configuration`.  Before you do so, however, you should enable the
-"localhost" host variables, which will configure this deployment of Open edX:
+within `edx-configuration`.
+
+Before you do so, however, you should enable the "localhost" host variables,
+which will configure this deployment of Open edX.  Due to how Ansible variable
+precedence works, it is recommended that you copy the sample ones to a separate
+directory:
 
 ```
-cd /var/tmp/edx-configuration/playbooks/openstack/host_vars
+cp /var/tmp/edx-configuration/playbooks/openstack /var/tmp/edx-configuration-secrets
+cd /var/tmp/edx-configuration-secrets/host_vars
 cp localhost.example localhost
-cd ../../
-ansible-playbook -i openstack/inventory.ini -c local openstack-single-node.yml
+cd /var/tmp/edx-configuration/playbooks
+ansible-playbook -i ../../edx-configuration-secrets/inventory.ini -c local openstack-single-node.yml
 ```
 
 As mentioned above, this playbook run may take one hour or more.  After it's
@@ -128,8 +133,9 @@ If you want to deploy the hastexo XBlock together with Open edX to your single
 node, go back to your installed node and:
 
 1. Locate the following variables in
-   `/var/tmp/edx-configuration/playbooks/openstack/host_vars/localhost` (which
-   you created above) and change them as described:
+   `/var/tmp/edx-configuration-secrets/host_vars/localhost` (which you created
+   above) and change them as described.  Set the `os_*` variables to the
+   OpenStack cloud of your choice.
 
     ```
     EDXAPP_EXTRA_REQUIREMENTS:
@@ -148,7 +154,7 @@ node, go back to your installed node and:
      - certs
      - demo
      - gateone
-    $ ansible-playbook -i openstack/inventory.ini -c local openstack-single-node.yaml
+    $ ansible-playbook -i ../../edx-configuration-secrets/inventory.ini -c local openstack-single-node.yaml
     ```
 
 
@@ -291,8 +297,8 @@ Be sure to run the `inventory.py` dynamic inventory generator, as opposed to
 the static `intentory.ini`, meant for single node deployments:
 
 ```
-cd /var/tmp/edx-configuration/playbooks
-ansible-playbook -i openstack/inventory.py openstack-multi-node.yml
+cd ~/edx-configuration/playbooks
+ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml
 ```
 
 This playbook run may take one hour or more.  After it's done, log out of the
@@ -329,9 +335,7 @@ database migrations:
 
 ```
 cd /var/tmp/edx-configuration/playbooks
-ansible-playbook -i openstack/inventory.py openstack-multi-node.yml \
-  -e "migrate_db=no" \
-  --limit app_servers
+ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml --limit app_servers
 ```
 
 #### Multiple nodes with the hastexo XBlock
@@ -340,8 +344,9 @@ If you want to deploy the hastexo XBlock together with Open edX to your multi
 node cluster, go back to your deploy node and:
 
 1. Locate the following variables in
-   `/var/tmp/edx-configuration/playbooks/openstack/group_vars/all` (which you
-   created above) and change them as described:
+   `/var/tmp/edx-configuration-secrets/group_vars/all` (which you created
+   above) and change them as described.  Set the `os_*` variables to the
+   OpenStack cloud of your choice.
 
     ```
     EDXAPP_EXTRA_REQUIREMENTS:
@@ -351,18 +356,21 @@ node cluster, go back to your deploy node and:
     ```
 
 2. Add the `gateone` role to `openstack-multi-node.yml` under the `app_servers`
-   section (the last one) and rerun that playbook, limitting the run
-   appropriately:
+   section (the last one).
 
     ```
-    $ cd /var/tmp/edx-configuration/playbooks
+    $ cd ~/edx-configuration/playbooks
     $ vim openstack-multi-node.yaml
     ...
     - certs
     - demo
     - gateone
-    $ ansible-playbook -i openstack/inventory.py openstack-multi-node.yml \
-      --limit app_servers
+    ```
+
+3. Run that playbook, limitting the run to the `app_servers`:
+
+    ```
+    $ ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml --limit app_servers
     ```
 
 
