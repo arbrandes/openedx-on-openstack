@@ -9,3 +9,4 @@ pages:
   - Home: index.md
   - Prerequisites: prerequisites.md
   - Deployment Options: deployment_options.md
+  - Analytics: analytics.md
