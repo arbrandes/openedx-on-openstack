@@ -1,4 +1,4 @@
-## Working with app server master images
+# Working with app server master images
 
 If you have more than just a few app servers, maintaining them directly with
 ansible is very inefficient.  To solve this, an `edx-app-master.yaml` template
@@ -10,7 +10,7 @@ request it to be created by the the existing stack, or you you can use the
 `edx-app-master.yaml` template directly.
 
 
-### Requesting a new app master
+## Requesting a new app master
 
 To request the existing stack to create a new app master server, invoke:
 
@@ -64,7 +64,7 @@ openstack stack update \
 ```
 
 
-### Using `edx-app-master.yaml` directly
+## Using `edx-app-master.yaml` directly
 
 To use the `edx-app-master.yaml` template directly, you must set a few
 mandatory parameters when invoking Heat:
