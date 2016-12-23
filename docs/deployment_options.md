@@ -1,4 +1,4 @@
-## Deployment options
+# Deployment options
 
 You can use the Heat templates to deploy either a single-node or a
 multi-node edX environment.
@@ -15,7 +15,7 @@ multi-node edX environment.
   application servers behind a load balancer.
 
 
-### Deploying a single-node environment
+## Deploying a single-node environment
 
 To deploy a single-node Open edX environment for testing and
 evaluation purposes, use the `edx-single-node.yaml` template. You must
@@ -82,7 +82,7 @@ HTTPS URLs, respectively:
 * https://lms.example.com
 * https://studio.example.com
 
-#### Single node with the hastexo XBlock
+### Single node with the hastexo XBlock
 
 If you want to deploy the hastexo XBlock together with Open edX to your single
 node, go back to your installed node and:
@@ -137,7 +137,7 @@ $ ansible-playbook -i ../../edx-configuration-secrets/inventory.ini -c local ope
 ```
 
 
-### Deploying a multi-node environment
+## Deploying a multi-node environment
 
 To deploy a multi-node Open edX environment, use the
 `edx-multi-node.yaml` template. You must set three mandatory
@@ -319,7 +319,7 @@ cd /var/tmp/edx-configuration/playbooks
 ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml --limit app_servers
 ```
 
-#### Multiple nodes with the hastexo XBlock
+### Multiple nodes with the hastexo XBlock
 
 If you want to deploy the hastexo XBlock together with Open edX to your multi
 node cluster, go back to your deploy node and:
@@ -370,7 +370,7 @@ $ vim openstack-multi-node.yaml
 $ ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml --limit app_servers
 ```
 
-#### Working with app server master images
+### Working with app server master images
 
 If you have more than just a few app servers, maintaining them directly with
 ansible is very inefficient.  To solve this, an `edx-app-master.yaml` template
@@ -382,7 +382,7 @@ request it to be created by the the existing stack, or you you can use the
 `edx-app-master.yaml` template directly.
 
 
-##### Requesting a new app master
+#### Requesting a new app master
 
 To request the existing stack to create a new app master server, invoke:
 
@@ -436,7 +436,7 @@ openstack stack update \
 ```
 
 
-##### Using `edx-app-master.yaml` directly
+#### Using `edx-app-master.yaml` directly
 
 To use the `edx-app-master.yaml` template directly, you must set a few
 mandatory parameters when invoking Heat:

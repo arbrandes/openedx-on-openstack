@@ -1,4 +1,4 @@
-## Firing up an analytics stack
+# Firing up an analytics stack
 
 Create the stack using the existing stack's management network and security
 group:

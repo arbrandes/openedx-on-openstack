@@ -1,4 +1,4 @@
-## Backing up MySQL and MongoDB data on a multi-node stack
+# Backing up MySQL and MongoDB data on a multi-node stack
 
 In `playbooks/openstack` you'll find a `backup.yml` playbook that will take
 consistent Cinder snapshots of the MySQL and MongoDB volumes of backend
@@ -29,7 +29,7 @@ certain pattern: the MySQL volume must contain "mysql_data" in its name, and
 the MongoDB one must contain "mongodb_data".  The provided multi-node Heat
 template follows this precise pattern.
 
-### Automating the backup
+## Automating the backup
 
 To run the backup playbook on a schedule, create a cron file such as
 `/etc/cron.d/backup`.  If you wish to run the backup daily at 01:05 AM, for
