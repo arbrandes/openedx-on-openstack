@@ -10,3 +10,4 @@ pages:
   - Prerequisites: prerequisites.md
   - Deployment Options: deployment_options.md
   - Analytics: analytics.md
+  - Backup: backup.md
