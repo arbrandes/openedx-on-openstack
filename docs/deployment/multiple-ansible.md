@@ -1,4 +1,4 @@
-## Deploying a multi-node environment
+# Deploying a multi-node environment
 
 To deploy a multi-node Open edX environment, use the
 `edx-multi-node.yaml` template. You must set three mandatory
@@ -180,7 +180,7 @@ cd /var/tmp/edx-configuration/playbooks
 ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml --limit app_servers
 ```
 
-### Multiple nodes with the hastexo XBlock
+## Multiple nodes with the hastexo XBlock
 
 If you want to deploy the hastexo XBlock together with Open edX to your multi
 node cluster, go back to your deploy node and:

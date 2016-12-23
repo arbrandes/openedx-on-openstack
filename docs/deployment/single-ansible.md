@@ -1,4 +1,4 @@
-## Deploying a single-node environment
+# Deploying a single-node environment
 
 To deploy a single-node Open edX environment for testing and
 evaluation purposes, use the `edx-single-node.yaml` template. You must
@@ -65,7 +65,7 @@ HTTPS URLs, respectively:
 * https://lms.example.com
 * https://studio.example.com
 
-### Single node with the hastexo XBlock
+## Single node with the hastexo XBlock
 
 If you want to deploy the hastexo XBlock together with Open edX to your single
 node, go back to your installed node and:
