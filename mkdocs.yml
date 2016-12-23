@@ -5,3 +5,7 @@ markdown_extensions:
   - codehilite
   - markdown_include.include
   - linkify
+pages:
+  - Home: index.md
+  - Prerequisites: prerequisites.md
+  - Deployment Options: deployment_options.md
