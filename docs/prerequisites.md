@@ -15,7 +15,7 @@ the following steps:
 - Retrieve the Neutron UUID of your external network, that is, the
   network that floating IPs are allocated from:
 
-```
+```bash
 openstack network list
 openstack network show <networkname>
 ```
@@ -23,7 +23,7 @@ openstack network show <networkname>
 - Create a Nova keypair for yourself (`openstack keypair create`).
 - Upload an Ubuntu 14.04 image for your tenant into Glance:
 
-```
+```bash
 wget https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
 openstack image create \
   --disk-format qcow2 \
