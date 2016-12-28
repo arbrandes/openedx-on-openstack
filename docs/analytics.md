@@ -32,6 +32,7 @@ existing `backend_servers`, and only the analytics server under
 
 ```bash
 vim /var/tmp/edx-configuration-secrets/analytics.ini
+```
 
 ```ini
 [analytics_servers]
@@ -87,7 +88,6 @@ sudo vim /edx/etc/edx-analytics-pipeline/override.cfg
 ```
 
 ```ini
-...
 [elasticsearch]
 host = http://192.168.122.111:9201/
 ```
