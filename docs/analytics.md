@@ -3,7 +3,7 @@
 Create the stack using the existing stack's management network and security
 group:
 
-```
+```bash
 openstack stack create \
     --template heat-templates/hot/edx-analytics-server.yaml \
     --parameter name=<server_name> \
@@ -19,7 +19,7 @@ openstack stack create \
 The analytics server's default internal IP is `192.168.122.120`.  Deploy the
 stack's SSH key pair to it from the deploy node:
 
-```
+```bash
 ip=192.168.122.120
 ssh-keyscan $ip >> ~/.ssh/known_hosts
 ssh-copy-id -i ~/.ssh/id_rsa $ip
@@ -30,9 +30,10 @@ You'll create a static inventory file, `analytics.ini`, containing the
 existing `backend_servers`, and only the analytics server under
 `analytics_servers`:
 
-```
+```bash
 vim /var/tmp/edx-configuration-secrets/analytics.ini
-...
+
+```ini
 [analytics_servers]
 192.168.122.120
 
@@ -44,14 +45,14 @@ vim /var/tmp/edx-configuration-secrets/analytics.ini
 
 You can find out what are the existing backend servers by running:
 
-```
+```bash
 /var/tmp/edx-configuration-secrets/openstack.py --list
 ```
 
 Now, run the `openstack-analytics.yaml` playbook using this inventory file on
 the `analytics_servers` group.
 
-```
+```bash
 cd /var/tmp/edx-configuration/playbooks
 ansible-playbook \
     -i ../../edx-configuration-secrets/analytics.ini \
@@ -61,13 +62,13 @@ ansible-playbook \
 
 SSH into the the analytics node for the following:
 
-```
+```bash
 ssh 192.168.122.120
 ```
 
 Set up the pipeline in a new virtual env:
 
-```
+```bash
 # Create a new virtualenv for the pipeline, and activate it
 virtualenv pipeline
 . pipeline/bin/activate
@@ -80,9 +81,12 @@ make bootstrap
 
 Copy the sample `devstack.cfg` configuration file and change it as follows:
 
-```
+```bash
 sudo cp ~/edx-analytics-pipeline/config/devstack.cfg /edx/etc/edx-analytics-pipeline/override.cfg
 sudo vim /edx/etc/edx-analytics-pipeline/override.cfg
+```
+
+```ini
 ...
 [elasticsearch]
 host = http://192.168.122.111:9201/
@@ -92,7 +96,7 @@ Test it with a simple task that counts daily events.  This will run through the
 installation procedure and may take a while.  On subsequent invocations,
 however, it will be possible to skip it.
 
-```
+```bash
 remote-task \
     --host localhost \
     --repo https://github.com/edx/edx-analytics-pipeline \
@@ -107,7 +111,7 @@ remote-task \
 
 Now import enrollments, skipping the installation:
 
-```
+```bash
 remote-task \
     --host localhost \
     --user ubuntu \

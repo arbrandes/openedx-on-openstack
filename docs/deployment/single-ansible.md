@@ -9,7 +9,7 @@ set two mandatory parameters when invoking Heat:
 - `key_name`, which is the name of the Nova keypair that you'll be
   using to log in once the machines have spun up.
 
-```
+```bash
 openstack stack create \
     --template heat-templates/hot/edx-single-node.yaml \
     --parameter public_net_id=<uuid> \
@@ -19,14 +19,14 @@ openstack stack create \
 
 To verify that the stack has reached the `CREATE_COMPLETE` state, run:
 
-```
+```bash
 openstack stack show <stack_name>
 ```
 
 Once stack creation is complete, you can use `heat output-show` to
 retrieve the IP address of your Open edX host:
 
-```
+```bash
 openstack stack output show <stack_name> public_ip
 ssh ubuntu@<public_ip>
 ```
@@ -42,7 +42,7 @@ which will configure this deployment of Open edX.  Due to how Ansible variable
 precedence works, it is recommended that you copy the sample ones to a separate
 directory:
 
-```
+```bash
 cp /var/tmp/edx-configuration/playbooks/openstack /var/tmp/edx-configuration-secrets
 cd /var/tmp/edx-configuration-secrets/host_vars
 cp localhost.example localhost
@@ -75,7 +75,7 @@ node, go back to your installed node and:
   created above) and change them as described.  Set the `os_*`
   variables to the OpenStack cloud of your choice.
 
-```
+```yaml
 EDXAPP_EXTRA_REQUIREMENTS:
   - name: "git+https://github.com/hastexo/hastexo-xblock.git@master#egg=hastexo-xblock"
 EDXAPP_ADDL_INSTALLED_APPS:
@@ -101,7 +101,7 @@ EDXAPP_XBLOCK_SETTINGS:
 - Check out the `hastexo/integration/base` branch of
   edx-configuration, which contains the `gateone` role:
 
-```
+```bash
 $ cd /var/tmp/edx-configuration
 $ git checkout -b hastexo/integration/base origin/hastexo/integration/base
 ```
@@ -109,7 +109,7 @@ $ git checkout -b hastexo/integration/base origin/hastexo/integration/base
 - Add the `gateone` role to `openstack-single-node.yml` and rerun that
   playbook:
 
-```
+```bash
 $ cd /var/tmp/edx-configuration/playbooks
 $ vim openstack-single-node.yaml
  ...

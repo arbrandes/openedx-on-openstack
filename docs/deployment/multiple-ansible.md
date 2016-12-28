@@ -13,7 +13,7 @@ parameters when invoking Heat:
 
 In addition, you must set the name of the stack.
 
-```
+```bash
 stack=<stack_name>
 openstack stack create \
     --template heat-templates/hot/edx-multi-node.yaml \
@@ -25,7 +25,7 @@ openstack stack create \
 
 To verify that the stack has reached the `CREATE_COMPLETE` state, run:
 
-```
+```bash
 openstack stack show $stack
 ```
 
@@ -33,7 +33,7 @@ Once stack creation is complete, you can use `openstack stack output show` to
 retrieve the IP address of your deployment host, and then to connect to it,
 making sure to forward your SSH authentication agent:
 
-```
+```bash
 openstack stack output show $stack deploy_ip
 ssh ubuntu@<deploy_ip> -A
 ```
@@ -44,7 +44,7 @@ variables, which will configure this deployment of Open edX.  Due to how
 Ansible variable precedence works, it is recommended that you copy the sample
 ones to a separate directory:
 
-```
+```bash
 git clone https://github.com/hastexo/edx-configuration.git -b hastexo/integration/base
 cp -a edx-configuration/playbooks/openstack edx-configuration-secrets
 cd edx-configuration-secrets/group_vars
@@ -59,7 +59,7 @@ work correctly in an OpenStack cluster.  To do so, edit
 `edx-configuration-secrets/group_vars/all`, and replace the repository
 variables with the following:
 
-```
+```yaml
 # Repos
 edx_platform_repo: "https://{{ COMMON_GIT_MIRROR }}/hastexo/edx-platform.git"
 edx_platform_version: "hastexo/integration/hastexo"
@@ -85,7 +85,7 @@ connections originating from the site itself:
     `edx-configuration-secrets/group_vars/all` and replacing `EDXAPP_SITE_NAME`
     with the desired domain.
 
-```
+```bash
 site=lms.example.com
 openstack container create $site
 openstack container set --property "read_acl=.r:$site" $site
@@ -106,7 +106,7 @@ add the nodes to the host list so one doesn't have to manually confirm them
 later.  Note that this will only work if authentication forwarding is properly
 configured, and if you're logged in as the default user, "ubuntu".
 
-```sh
+```bash
 # Create a new key pair
 export KEYFILE=~/.ssh/id_rsa
 ssh-keygen -t rsa -N "" -f $KEYFILE
@@ -127,7 +127,7 @@ forwarding, as the latter can interfere with the Ansible deployment.  Ideally,
 start a screen session as well, so a disconnection will not stop the Ansible
 run:
 
-```
+```bash
 exit
 ssh ubuntu@<deploy_ip>
 screen
@@ -138,7 +138,7 @@ the static `intentory.ini`, meant for single node deployments.  Also, set
 `migrate_db=yes` on this first run, to ensure that the databases and tables are
 properly created.
 
-```
+```bash
 cd ~/edx-configuration/playbooks
 ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml -e migrate_db=yes
 ```
@@ -148,7 +148,7 @@ deploy node and edit your local /etc/hosts.  If you didn't change any of the
 example variables, enter the following, substituting `app_ip` for the IP
 address of the app server pool you can obtain with the following command:
 
-```
+```bash
 openstack stack output show $stack app_ip
 vim /etc/hosts
 ---
@@ -165,7 +165,7 @@ To deploy additional application servers within a previously deployed
 stack, use the `openstack stack update` command to increase the `app_count`
 stack parameter:
 
-```
+```bash
 openstack stack update --existing --parameter app_count=<new_num> $stack
 ```
 
@@ -175,7 +175,7 @@ If you added app servers, however, log back into the deploy node, and run the
 multi-node playbook again, limiting the run to the app servers and avoiding
 database migrations:
 
-```
+```bash
 cd /var/tmp/edx-configuration/playbooks
 ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml --limit app_servers
 ```
@@ -190,7 +190,7 @@ node cluster, go back to your deploy node and:
   created above) and change them as described.  Set the `os_*`
   variables to the OpenStack cloud of your choice.
 
-```
+```yaml
 EDXAPP_EXTRA_REQUIREMENTS:
   - name: "git+https://github.com/hastexo/hastexo-xblock.git@master#egg=hastexo-xblock"
 EDXAPP_ADDL_INSTALLED_APPS:
@@ -216,7 +216,7 @@ EDXAPP_XBLOCK_SETTINGS:
 - Add the `gateone` role to `openstack-multi-node.yml` under the
   `app_servers` section (the last one).
 
-```
+```bash
 $ cd ~/edx-configuration/playbooks
 $ vim openstack-multi-node.yaml
 ...
@@ -227,6 +227,6 @@ $ vim openstack-multi-node.yaml
 
 - Run that playbook, limitting the run to the `app_servers`:
 
-```
+```bash
 $ ansible-playbook -i ../../edx-configuration-secrets/inventory.py openstack-multi-node.yml --limit app_servers
 ```

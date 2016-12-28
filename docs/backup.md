@@ -14,7 +14,9 @@ maintained in rotation for each instance and database.
 
 It is recommended that this playbook be run with:
 
-    --limit <secondary_backend_node>
+```bash
+--limit <secondary_backend_node>
+```
 
 With the sample multi-node Heat template, it would either be `--limit
 192.168.122.112` or `--limit 192.168.122.113`.  It should not be targetted on
@@ -35,7 +37,7 @@ To run the backup playbook on a schedule, create a cron file such as
 `/etc/cron.d/backup`.  If you wish to run the backup daily at 01:05 AM, for
 example, copy the following lines into the file:
 
-```
+```cron
 # /etc/cron.d/backup: cron entry for backups
 
 SHELL=/bin/sh
@@ -54,7 +56,7 @@ that Ansible can connect to the backend node without human intervention.  (You
 can skip this step if you've already done it as part of initial stack
 deployment.)
 
-```sh
+```bash
 # Create a new key pair
 export KEYFILE=~/.ssh/id_rsa
 ssh-keygen -t rsa -N "" -f $KEYFILE
