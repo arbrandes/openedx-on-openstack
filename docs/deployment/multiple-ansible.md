@@ -81,9 +81,9 @@ the sample Ansible variables will configure edX to use the "lms.example.com"
 container.  Run the following to create the container with read permissions for
 connections originating from the site itself:
 
-    Note: You can change the site name by editing
-    `edx-configuration-secrets/group_vars/all` and replacing `EDXAPP_SITE_NAME`
-    with the desired domain.
+**Note:** You can change the site name by editing
+`edx-configuration-secrets/group_vars/all` and replacing
+`EDXAPP_SITE_NAME` with the desired domain.
 
 ```bash
 site=lms.example.com
@@ -96,10 +96,10 @@ Take the opportunity to set the `SWIFT_LOG_SYNC_*` variables in
 synchronization.  These Swift authentication variables will also be used by
 default for edX report storage.
 
-    Note: If you intend to use the hastexo XBlock, refer to the "Multiple nodes
-    with the hastexo XBlock" section below, before continuing.  Avoid actually
-    running the playbook in the last step therein: this will be accomplished in
-    in this section.
+**Note:** If you intend to use the hastexo XBlock, refer to the
+"Multiple nodes with the hastexo XBlock" section below, before
+continuing.  Avoid actually running the playbook in the last step
+therein: this will be accomplished in in this section.
 
 Now, generate a passphrase-less keypair, copy it over to the other nodes, and
 add the nodes to the host list so one doesn't have to manually confirm them
