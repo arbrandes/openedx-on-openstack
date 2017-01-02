@@ -1,8 +1,14 @@
 # OpenStack Heat templates
 
-This directory contains templates for automated Open edX deployment on
-the OpenStack platform. For these templates to work, the OpenStack
-environment must support:
+In
+[this directory](https://github.com/hastexo/edx-configuration/tree/hastexo/integration/hastexo/heat-templates)
+(`heat-templates` in the
+[`hastexo/integration/hastexo` branch](https://github.com/hastexo/edx-configuration/tree/hastexo/integration/hastexo)
+of the
+[`edx-configuration` repository](https://github.com/edx/configuration)),
+you will find templates for automated [Open edX](https://open.edx.org)
+deployment on the [OpenStack](http://www.openstack.org) platform. For
+these templates to work, the OpenStack environment must support:
 
 - OpenStack Keystone,
 - OpenStack Nova,
