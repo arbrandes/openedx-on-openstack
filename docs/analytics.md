@@ -67,6 +67,19 @@ SSH into the the analytics node for the following:
 ssh 192.168.122.120
 ```
 
+Disable the hadoop nodemanager memory check:
+
+```
+sudo vim /edx/app/hadoop/hadoop-2.3.0/etc/hadoop/yarn-site.xml
+...
+  <property>
+    <name>yarn.nodemanager.vmem-check-enabled</name>
+    <value>false</value>
+  </property>
+...
+sudo service yarn restart
+```
+
 Set up the pipeline in a new virtual env:
 
 ```bash
@@ -96,31 +109,74 @@ Test it with a simple task that counts daily events.  This will run through the
 installation procedure and may take a while.  On subsequent invocations,
 however, it will be possible to skip it.
 
-```bash
+```
+FROM_DATE="2 days ago"
+TO_DATE=now
 remote-task \
-    --host localhost \
-    --repo https://github.com/edx/edx-analytics-pipeline \
-    --user ubuntu \
-    --override-config /edx/etc/edx-analytics-pipeline/override.cfg \
-    --remote-name analyticstack \
     --wait TotalEventsDailyTask \
-    --interval 2016 \
+    --interval $(date +%Y-%m-%d -d "${FROM_DATE}")-$(date +%Y-%m-%d -d "${TO_DATE}") \
     --output-root hdfs://localhost:9000/output/ \
-    --local-scheduler
+    --override-config /edx/etc/edx-analytics-pipeline/override.cfg \
+    --repo https://github.com/edx/edx-analytics-pipeline \
+    --host localhost \
+    --user ubuntu \
+    --remote-name analyticstack \
+    --local-scheduler \
+    --n-reduce-tasks 1
 ```
 
-Now import enrollments, skipping the installation:
+Now process enrollment data for the last 2 days, skipping the installation:
 
-```bash
+```
+FROM_DATE="2 days ago"
+TO_DATE=now
+OVERWRITE_DAYS=2
 remote-task \
+    --wait ImportEnrollmentsIntoMysql \
+    --interval $(date +%Y-%m-%d -d "${FROM_DATE}")-$(date +%Y-%m-%d -d "${TO_DATE}") \
+    --overwrite-n-days $OVERWRITE_DAYS \
+    --override-config /edx/etc/edx-analytics-pipeline/override.cfg \
+    --skip-setup \
     --host localhost \
     --user ubuntu \
-    --override-config /edx/etc/edx-analytics-pipeline/override.cfg \
     --remote-name analyticstack \
+    --local-scheduler \
+    --n-reduce-tasks 1
+```
+
+What follows are the other tasks to be run on a regular basis:
+
+```
+TO_DATE=now
+WEEKS=24
+remote-task \
+    --wait CourseActivityWeeklyTask \
+    --end-date $(date +%Y-%m-%d -d "$TO_DATE") \
+    --weeks $WEEKS \
+    --override-config /edx/etc/edx-analytics-pipeline/override.cfg \
     --skip-setup \
-    --wait CourseEnrollmentEventsTask \
-    --interval 2016 \
-    --local-scheduler
+    --host localhost \
+    --user ubuntu \
+    --remote-name analyticstack \
+    --local-scheduler \
+    --n-reduce-tasks 1
+```
+
+```
+FROM_DATE="1 month ago"
+TO_DATE=now
+remote-task \
+    --wait ModuleEngagementIntervalTask \
+    --interval $(date +%Y-%m-%d -d "${FROM_DATE}")-$(date +%Y-%m-%d -d "${TO_DATE}") \
+    --overwrite-from-date $(date +%Y-%m-%d -d "$TO_DATE") \
+    --overwrite-mysql \
+    --override-config /edx/etc/edx-analytics-pipeline/override.cfg \
+    --skip-setup \
+    --host localhost \
+    --user ubuntu \
+    --remote-name analyticstack \
+    --local-scheduler \
+    --n-reduce-tasks 1
 ```
 
 Finally, log in to Insights, making sure you're logged into the LMS with a
